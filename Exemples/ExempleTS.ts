@@ -18,8 +18,8 @@ const o = { a: "foo", b: 12, c: "bar"}
 
 const {a, b, c: k} = o // valide
 
-type Item {
-    title: string
-    price: number
-    category: Category
-}
+// type Item {
+//     title: string,
+//     price: number
+//     // category: Category
+// }
