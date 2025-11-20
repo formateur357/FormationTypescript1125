@@ -4,11 +4,33 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Run TypeScript",
-      "runtimeExecutable": "node",
-      "runtimeArgs": ["-r", "ts-node/register"],
-      "args": ["${file}"],
-      "cwd": "${workspaceFolder}"
+      "name": "Compile current TS",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": [
+        "tsc",
+        "--outDir",
+        "${fileDirname}",
+        "${fileBasenameNoExtension}.ts"
+      ],
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "preLaunchTask": null,
+      "presentation": {
+        "hidden": false,
+        "group": "ts"
+      }
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Run current JS",
+      "program": "${fileDirname}/${fileBasenameNoExtension}.js",
+      "cwd": "${workspaceFolder}",
+      "console": "integratedTerminal",
+      "presentation": {
+        "hidden": false,
+        "group": "ts"
+      }
     }
   ]
 }
