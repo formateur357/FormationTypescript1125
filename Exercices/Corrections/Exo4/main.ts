@@ -1,8 +1,8 @@
 // src/main.ts
 
-import { authStore } from "./authStore";
-import { userDataStore } from "./userDataStore";
-import { printDashboard } from "./dashboard";
+import { authStore } from "./src/authStore";
+import { userDataStore } from "./src/userDataStore";
+import { printDashboard } from "./src/dashboard";
 
 /** Sleep utilitaire */
 function sleep(ms: number) {
