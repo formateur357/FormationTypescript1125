@@ -1,0 +1,135 @@
+Vous devez créer un petit module qui simule :
+
+La connexion / déconnexion d’un utilisateur (Promises)
+La gestion d’un état global réactif (BehaviorSubject)
+Le chargement asynchrone de données utilisateur (Promise)
+L’affichage d’un “dashboard” mis à jour automatiquement (subscribe)
+
+Une application doit :
+
+permettre à un utilisateur de se connecter
+afficher ses données personnelles (liste de hobbies) après connexion
+gérer un état “loading” lors des opérations asynchrones
+mettre à jour l’affichage dès qu’un store change
+
+1) Créer un store basé sur :
+
+interface User {
+  id: number;
+  name: string;
+}
+
+interface AuthState {
+  user: User | null;
+  loading: boolean;
+}
+
+Créer un BehaviorSubject<AuthState> avec l’état initial :
+{
+  user: null,
+  loading: false
+}
+
+Créer une fonction getAuthState() qui renvoie l’état actuel.
+Créer une fonction authSubscribe() permettant de s’abonner au store.
+
+2) Connexion et déconnexion (Promises) (≈10 min)
+
+Créer deux fonctions :
+
+login(name: string): Promise<User>
+attend 1 seconde
+renvoie un utilisateur { id: aléatoire, name }
+
+logout(): Promise<void>
+attend 500 ms
+renvoie void
+
+Puis créer dans le store :
+
+async performLogin(name: string)
+met loading: true
+
+appelle login(name)
+met loading: false
+met à jour user avec le résultat
+
+async performLogout()
+met loading: true
+
+appelle logout()
+met loading: false
+met user: null
+
+3) Store des données utilisateur
+
+Créer une fonction
+fetchUserData(userId: number): Promise<{ hobbies: string[] }>
+
+Elle doit :
+
+attendre 1,2 seconde
+renvoyer par exemple :
+{ hobbies: ["Sport", "Jeux", "Musique"] }
+
+Créer un deuxième store :
+interface UserDataState {
+  data: string[] | null;
+  loading: boolean;
+}
+
+initialisation :
+{
+  data: null,
+  loading: false
+}
+
+Créer une fonction :
+
+async loadUserData()
+récupère l’utilisateur connecté depuis le store d’authentification
+si aucun utilisateur → afficher un message d’erreur et arrêter
+
+sinon :
+
+met loading: true
+appelle fetchUserData(user.id)
+met loading: false
+met data avec les hobbies reçus
+
+Créer une fonction :
+function printDashboard()
+
+Elle doit afficher clairement :
+
+loading auth
+utilisateur connecté ou “aucun”
+loading data
+hobbies ou “aucune donnée”
+
+Exemple attendu :
+
+--- Dashboard ---
+Auth loading: false
+User: Alice
+Data loading: false
+Hobbies: Sport, Jeux, Musique
+
+Consignes
+
+Faire une subscription au store auth qui appelle printDashboard() à chaque changement.
+Faire une subscription au store userData qui appelle printDashboard() à chaque changement.
+Donc le dashboard se met à jour dès qu’un des deux stores change, sans les combiner.
+
+Dans main.ts, écrire :
+
+await performLogin("Alice")
+await loadUserData()
+attendre 1,5 seconde (fonction sleep)
+await performLogout()
+
+Vous devez observer :
+
+les états loading passer à true/false
+l’utilisateur apparaître puis disparaître
+les hobbies apparaître après le login

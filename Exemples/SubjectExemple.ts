@@ -6,6 +6,8 @@ const subject = new Subject<number>();
 // Abonnement 1
 subject.subscribe({
   next: (value) => console.log(`Abonné 1: ${value}`),
+  error: (err) => console.error(err.message),
+  terminate: (value) => console.log(`signal de terminaison ${value}`)
 });
 
 // Abonnement 2
